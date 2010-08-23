@@ -27,17 +27,14 @@
         private var painting:Painting;
         private var brush:PaintBrush;
         private var customBrush:ExampleCustomBrush;
-        private var encoder:PNGEncoder;
-        private var fr:FileReference;
-		private var touchBrush:TouchPaintBrush;
+        private var touchBrush:TouchPaintBrush;
         
         public function Example() 
         {
-            trace("Example");
             stage.align = StageAlign.TOP_LEFT;
             stage.scaleMode = StageScaleMode.NO_SCALE;
             
-            painting = new Painting( stage.stageWidth, stage.stageHeight, 5 );
+            painting = new Painting( stage.stageWidth, stage.stageHeight, 2 );
             addChild( painting );
             
             var paintLayer:Layer = new Layer( painting );
@@ -59,8 +56,20 @@
         
         private function onKeyUp( event:KeyboardEvent ):void 
         {
-            if( event.keyCode == Keyboard.SPACE )
-                trace("YO");
+            if ( event.keyCode == Keyboard.SPACE )
+            {
+                mouseEnabled = mouseChildren = false;
+                var encoder:PNGEncoder = new PNGEncoder();
+                encoder.addEventListener( EncoderEvent.COMPLETE, onEncodingComplete );
+                encoder.encode( painting.composite );
+            }
+        }
+        
+        private function onEncodingComplete( event:EncoderEvent ):void 
+        {
+            var encoder:PNGEncoder = event.target as PNGEncoder;
+            var fr:FileReference = new FileReference();
+            fr.save( encoder.bytes, "painting." + encoder.fileExtension );
         }
     }
 }
