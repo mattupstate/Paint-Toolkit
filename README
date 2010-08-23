@@ -1,0 +1,7 @@
+This Paint Toolkit is a set of abstracted/base brush classes
+along with utilities for encoding bitmaps (PNG's and JPG's).
+Compile the provided example for a demonstration as to what
+this toolkit can. To compile simply use the compile-example
+build target by typing the following command:
+
+ant compile-example
